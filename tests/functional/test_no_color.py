@@ -14,6 +14,10 @@ from tests.lib import PipTestEnvironment
 
 @pytest.mark.network
 @pytest.mark.skipif(shutil.which("script") is None, reason="no 'script' executable")
+@pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="uses the POSIX script(1) pty utility and /tmp paths; not portable to Windows",
+)
 def test_no_color(script: PipTestEnvironment) -> None:
     """Ensure colour output disabled when --no-color is passed."""
     # Using 'script' in this test allows for transparently testing pip's output
